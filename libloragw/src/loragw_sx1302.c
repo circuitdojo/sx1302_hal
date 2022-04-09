@@ -37,7 +37,10 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 /* -------------------------------------------------------------------------- */
 /* --- PRIVATE MACROS ------------------------------------------------------- */
 
+#ifndef __ZEPHYR__
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+#endif
+
 #if DEBUG_SX1302 == 1
     #define DEBUG_MSG(str)              fprintf(stdout, str)
     #define DEBUG_PRINTF(fmt, args...)  fprintf(stdout, fmt, args)

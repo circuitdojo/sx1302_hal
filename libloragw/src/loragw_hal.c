@@ -30,7 +30,9 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 #include <stdbool.h>    /* bool type */
 #include <stdio.h>      /* printf fprintf */
 #include <string.h>     /* memcpy */
+#ifndef __ZEPHYR__
 #include <unistd.h>     /* symlink, unlink */
+#endif
 #include <inttypes.h>
 
 #include "loragw_reg.h"
@@ -56,7 +58,10 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 /* -------------------------------------------------------------------------- */
 /* --- PRIVATE MACROS ------------------------------------------------------- */
 
+#ifndef __ZEPHYR__
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+#endif 
+
 #if DEBUG_HAL == 1
     #define DEBUG_MSG(str)                fprintf(stdout, str)
     #define DEBUG_PRINTF(fmt, args...)    fprintf(stdout,"%s:%d: "fmt, __FUNCTION__, __LINE__, args)
@@ -1073,6 +1078,7 @@ int lgw_start(void) {
     strncat(CONTEXT_DEBUG.log_file_name, timestamp_str, sizeof CONTEXT_DEBUG.log_file_name);
 
     /* Open the file for writting */
+    #ifndef __ZEPHYR__
     log_file = fopen(CONTEXT_DEBUG.log_file_name, "w+"); /* create log file, overwrite if file already exist */
     if (log_file == NULL) {
         printf("ERROR: impossible to create log file %s\n", CONTEXT_DEBUG.log_file_name);
@@ -1087,6 +1093,7 @@ int lgw_start(void) {
             printf("ERROR: impossible to create symlink to log file %s\n", CONTEXT_DEBUG.log_file_name);
         }
     }
+#endif
 #endif
 
     /* Configure the pseudo-random generator (For Debug) */
@@ -1208,11 +1215,13 @@ int lgw_stop(void) {
         }
     }
 
+    #ifndef __ZEPHYR__
     /* Close log file */
     if (log_file != NULL) {
         fclose(log_file);
         log_file = NULL;
     }
+    #endif
 
     DEBUG_MSG("INFO: Disconnecting\n");
     x = lgw_disconnect();

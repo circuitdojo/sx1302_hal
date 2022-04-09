@@ -24,7 +24,11 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 #include <stdint.h>     /* C99 types */
 #include <stdbool.h>    /* boolean type */
 #include <stdio.h>      /* printf fprintf */
+#ifndef __ZEPHYR__
 #include <memory.h>     /* memset */
+#else 
+#include <string.h>     /* memset */
+#endif
 #include <inttypes.h>   /* PRIx64, PRIu64... */
 #include <assert.h>
 
@@ -35,7 +39,10 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 /* -------------------------------------------------------------------------- */
 /* --- PRIVATE MACROS ------------------------------------------------------- */
 
+#ifndef __ZEPHYR__
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
+#endif
+
 #if DEBUG_FTIME == 1
     #define DEBUG_MSG(str)                fprintf(stdout, str)
     #define DEBUG_PRINTF(fmt, args...)    fprintf(stdout, fmt, args)

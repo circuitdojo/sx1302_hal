@@ -21,7 +21,11 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 
 #include <stdint.h>     /* C99 types */
 #include <stdbool.h>    /* bool type */
+#ifndef __ZEPHYR__
 #include <sys/time.h>   /* gettimeofday, structtimeval */
+#else 
+#include <sys/_timeval.h> /* gettimeofday, structtimeval */
+#endif
 
 #include "config.h"     /* library configuration options (dynamically generated) */
 
@@ -33,8 +37,10 @@ License: Revised BSD License, see LICENSE.TXT file include in the project
 /* -------------------------------------------------------------------------- */
 /* --- PUBLIC MACROS -------------------------------------------------------- */
 
+#ifndef __ZEPHYR__
 #define MIN(a,b) (((a)<(b))?(a):(b))
 #define MAX(a,b) (((a)>(b))?(a):(b))
+#endif
 
 /**
 @brief Get a particular bit value from a byte

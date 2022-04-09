@@ -1,0 +1,2 @@
+add_subdirectory(libloragw)
+add_subdirectory(zephyr)
